@@ -49,13 +49,15 @@
 
 
 --7.Show all customers who have made a single payment above $6.99 (Use Subqueries)
-	SELECT CONCAT(first_name,' ',last_name) , amount
+	SELECT CONCAT(first_name, ' ', last_name) AS "full_name"
 	FROM customer
-	JOIN payment
-	ON customer.customer_id IN (
-	SELECT customer.customer_id
-	FROM payment
-	WHERE payment.amount > 6.99 );
+	WHERE customer_id IN(
+ 		SELECT customer_id
+ 		FROM payment
+ 		WHERE amount > 6.99
+ 		GROUP BY customer_id
+ 		HAVING COUNT(payment_id) = 1
+);
 
 
 --8. How many free rentals did our stores give away?
